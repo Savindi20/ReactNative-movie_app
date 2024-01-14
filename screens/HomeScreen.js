@@ -13,8 +13,21 @@ export default function HomeScreen() {
         <StatusBar style="light" />
         <View className="flex-row justify-between items-center mx-4">
           <Bars3CenterLeftIcon size="30" strokeWidth={2} color="white" />
+          <Text 
+            className="text-white text-3xl font-bold">
+              <Text style={styles.text}>M</Text>ovies
+          </Text>
+          <TouchableOpacity onPress={()=> navigation.navigate('Search')}>
+            <MagnifyingGlassIcon size="30" strokeWidth={2} color="white" />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
+
+      <ScrollView 
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{paddingBottom: 10}}
+      >
+      </ScrollView>
     </View>
   )
 }
