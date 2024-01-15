@@ -6,6 +6,9 @@ import { Bars3CenterLeftIcon } from 'react-native-heroicons/outline';
 
 const ios = Platform.OS == 'ios';
 export default function HomeScreen() {
+
+  const [trending, setTrending] = useState([1,2,3]);
+
   return (
     <View className="bg-neutral-800">
       {/* Search Bar and logo */}
@@ -24,10 +27,14 @@ export default function HomeScreen() {
       </SafeAreaView>
 
       <ScrollView 
-        showsVerticalScrollIndicator={false} 
-        contentContainerStyle={{paddingBottom: 10}}
-      >
-      </ScrollView>
+            showsVerticalScrollIndicator={false} 
+            contentContainerStyle={{paddingBottom: 10}}
+          >
+
+            {/* Trending Movies Carousel */}
+            <TrendingMovies data={trending} />
+
+          </ScrollView>
     </View>
   )
 }
