@@ -2,6 +2,8 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Carousel from 'react-native-snap-carousel';
 
+var {width, height} = Dimensions.get('window');
+
 export default function TrendingMovies({data}) {
   return (
     <View className="mb-8">
@@ -24,9 +26,17 @@ export default function TrendingMovies({data}) {
 
 const MovieCard = ({item, handleClick})=>{
 
-    return (
+  return (
       <TouchableWithoutFeedback onPress={()=> handleClick(item)}>
-         <Text>Movie</Text> 
+          <Image 
+              // source={require('../assets/images/moviePoster1.png')} 
+              source={{uri: image500(item.poster_path)}} 
+              style={{
+                  width: width * 0.6,
+                  height: height * 0.4
+              }}
+              className="rounded-3xl" 
+          />
       </TouchableWithoutFeedback>
-    )
+  )
 }
