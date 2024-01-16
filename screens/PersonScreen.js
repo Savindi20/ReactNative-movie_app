@@ -144,6 +144,10 @@ export default function PersonScreen() {
                 </View>
             )
         }
+       
+        
+
     </ScrollView>
+    
   )
 }

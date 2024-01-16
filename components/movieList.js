@@ -1,50 +1,60 @@
-import { View, Text, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, ScrollView, TouchableWithoutFeedback, Image, Dimensions, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { fallbackPersonImage, image185 } from '../api/moviedb';
-var {width, height} = Dimensions.get('window');
+import { moviesData } from '../constants'
+import { useNavigation } from '@react-navigation/native';
+import { fallbackMoviePoster, image185, image342, poster342 } from '../api/moviedb';
+import { styles } from '../theme';
+const {width, height} =  Dimensions.get('window');
 
-export default function Cast({cast, navigation}) {
+export default function MovieList({title, hideSeeAll, data}) {
+  const navigation = useNavigation();
   return (
-    <View className="my-6">
-        <Text className="text-white text-lg mx-4 mb-5">Top Cast</Text>
-        <ScrollView 
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{paddingHorizontal: 15}}
-        >
-            {
-                cast && cast.map((person, index)=>{
-                    return (
-                        <TouchableOpacity 
-                            key={index} 
-                            onPress={()=> navigation.navigate('Person', person)} 
-                            className="mr-4 items-center">
-                            <View 
-                                className="overflow-hidden rounded-full h-20 w-20 items-center border border-neutral-500">
-                                <Image 
-                                    className="rounded-2xl h-24 w-20"
-                                    // source={require('../assets/images/castImage1.png')} 
-                                    source={{uri: image185(person?.profile_path) || fallbackPersonImage}} 
-                                />
-                            </View>
-                            
-                            <Text className="text-white text-xs mt-1">
+    <View className="mb-8 space-y-4">
+      
+      <View className="mx-4 flex-row justify-between items-center">
+        <Text className="text-white text-lg">{title}</Text>
+        {
+          !hideSeeAll && (
+            <TouchableOpacity>
+              <Text style={styles.text} className="text-lg">See All</Text>
+            </TouchableOpacity>
+          )
+        }
+        
+        
+      </View>
+      
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{paddingHorizontal: 15}}
+      >
+        {
+            data.map((item, index)=>{
+                return (
+                    <TouchableWithoutFeedback 
+                      key={index} 
+                      onPress={()=> navigation.push('Movie', item)}
+                    >
+                        <View className="space-y-1 mr-4">
+                            <Image 
+                              // source={require('../assets/images/moviePoster2.png')}
+                              source={{uri: image185(item.poster_path) || fallbackMoviePoster}} 
+                              className="rounded-3xl" 
+                              style={{ width: width*0.33, height: height*0.22}} 
+                            />
+                            <Text className="text-neutral-300 ml-1">
                                 {
-                                    person?.character.length>10? person.character.slice(0,10)+'...' : person?.character
+                                    item.title.length>14? item.title.slice(0,14)+'...': item.title
                                 }
                             </Text>
-                            <Text className="text-neutral-400 text-xs">
-                                {
-                                    person?.original_name.length>10? person.original_name.slice(0,10)+'...' : person?.original_name
-                                }
-                            </Text>
-                        </TouchableOpacity>
-                    )
-                })
-            }
-            
-        </ScrollView>
-
+                        </View>
+                    </TouchableWithoutFeedback>
+                )
+            })
+        }
+      </ScrollView>
+      
     </View>
   )
 }
