@@ -1,10 +1,11 @@
 import { View, Text, Image, TouchableOpacity, Platform, Dimensions, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChevronLeftIcon } from 'react-native-heroicons/outline'
 import { HeartIcon } from 'react-native-heroicons/solid'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import MovieList from '../components/movieList';
-import { fallbackPersonImage, image342 } from '../api/moviedb';
+import { fallbackPersonImage, fetchPersonDetails, fetchPersonMovies, image185, image342, image500 } from '../api/moviedb';
 import Loading from '../components/loading';
 import { styles } from '../theme';
 
@@ -13,6 +14,36 @@ const verticalMargin = ios? '':' my-3';
 var {width, height} = Dimensions.get('window');
 
 export default function PersonScreen() {
+    const {params: item} = useRoute();
+    const [isFavourite, toggleFavourite] = useState(false);
+    const navigation = useNavigation();
+    const [person, setPerson] = useState({});
+    const [personMovies, setPersonMovies] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(()=>{
+        setLoading(true);
+        getPersonDetails(item.id);
+        getPersonMovies(item.id);
+    },[item]);
+
+    const getPersonDetails = async id=>{
+        const data = await fetchPersonDetails(id);
+        console.log('got person details');
+        setLoading(false);
+        if(data) {
+            setPerson(data);
+        }
+    }
+    const getPersonMovies = async id=>{
+        const data = await fetchPersonMovies(id);
+        console.log('got person movies')
+        if(data && data.cast){
+            setPersonMovies(data.cast);
+        }
+
+    }
+
   return (
     <ScrollView 
         className="flex-1 bg-neutral-900" 
