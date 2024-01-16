@@ -1,12 +1,41 @@
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, TouchableWithoutFeedback, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { XMarkIcon } from 'react-native-heroicons/outline'
+import { useNavigation } from '@react-navigation/native'
+import { fallbackMoviePoster, image185, searchMovies } from '../api/moviedb'
+import { debounce } from 'lodash'
+import Loading from '../components/loading'
 
 const {width, height} =  Dimensions.get('window');
 
 
 export default function SearchScreen() {
+    const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
+    const [results, setResults] = useState([])
+
+    const handleSearch = search=>{
+        if(search && search.length>2){
+            setLoading(true);
+            searchMovies({
+                query: search,
+                include_adult: false,
+                language: 'en-US',
+                page: '1'
+            }).then(data=>{
+                console.log('got search results');
+                setLoading(false);
+                if(data && data.results) setResults(data.results);
+            })
+        }else{
+            setLoading(false);
+            setResults([])
+        }
+      }
+    
+    const handleTextDebounce = useCallback(debounce(handleSearch, 400), []);    
+
   return (
     <SafeAreaView className="bg-neutral-800 flex-1">
 
