@@ -98,49 +98,49 @@ export default function MovieScreen() {
         
       </View>
         
-        {/* movie details */}
-        
-        <View style={{marginTop: -(height*0.09)}} className="space-y-3">
-            {/* title */}
-            <Text className="text-white text-center text-3xl font-bold tracking-widest">
-                {
-                    movie?.title
-                }
-            </Text>
-
-            {/* status, release year, runtime */}
+      {/* movie details */}
+      
+      <View style={{marginTop: -(height*0.09)}} className="space-y-3">
+        {/* title */}
+        <Text className="text-white text-center text-3xl font-bold tracking-widest">
             {
-                movie?.id? (
-                    <Text className="text-neutral-400 font-semibold text-base text-center">
-                        {movie?.status} • {movie?.release_date?.split('-')[0] || 'N/A'} • {movie?.runtime} min
-                    </Text>
-                ):null
+                movie?.title
             }
-            
+        </Text>
 
-            
-            {/* genres  */}
-            <View className="flex-row justify-center mx-4 space-x-2">
-                {
-                    movie?.genres?.map((genre,index)=>{
-                        let showDot = index+1 != movie.genres.length;
-                        return (
-                            <Text key={index} className="text-neutral-400 font-semibold text-base text-center">
-                                {genre?.name} {showDot? "•":null}
-                            </Text>
-                        )
-                    })
-                }
-            </View>
-
-            {/* description */}
-            <Text className="text-neutral-400 mx-4 tracking-wide">
-                {
-                    movie?.overview
-                }
-            </Text>
+        {/* status, release year, runtime */}
+        {
+            movie?.id? (
+                <Text className="text-neutral-400 font-semibold text-base text-center">
+                    {movie?.status} • {movie?.release_date?.split('-')[0] || 'N/A'} • {movie?.runtime} min
+                </Text>
+            ):null
+        }
         
+
+        
+        {/* genres  */}
+        <View className="flex-row justify-center mx-4 space-x-2">
+            {
+                movie?.genres?.map((genre,index)=>{
+                    let showDot = index+1 != movie.genres.length;
+                    return (
+                        <Text key={index} className="text-neutral-400 font-semibold text-base text-center">
+                            {genre?.name} {showDot? "•":null}
+                        </Text>
+                    )
+                })
+            }
         </View>
+
+        {/* description */}
+        <Text className="text-neutral-400 mx-4 tracking-wide">
+            {
+                movie?.overview
+            }
+        </Text>
+        
+     </View>
         
       
       {/* cast */}
